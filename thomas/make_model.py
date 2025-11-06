@@ -1,27 +1,40 @@
 #%%
+import os
+os.chdir('..')
 import pandas as pd
 import numpy as np
 from parse_data import parse_chord_string
+from thomas.chord_map import uncommon_chord_map
 
 df = pd.read_csv('data/chordonomicon.csv')
 df['chord_map'] = df['chords'].apply(parse_chord_string)
-measures = df['chord_map'].to_list()
 
+#%%
+df = df[df['main_genre'] == 'pop']
 seq = []
 states = set()
-for measure in measures:
-    for k, v in measure.items():
-        if 'chorus' in k.lower():
-            seq += v
-            states.update(v)
-
+for chord_map in df['chord_map'].tolist():
+    for k, v in chord_map.items():
+        if 'chorus' not in k:
+            continue
+        new_chords = ['start/end']
+        for c in v:
+            if '/' in c: # The / is what the bass does, semantically safe to remove
+                # uncommon_chords_map maps the least-frequent chords to similar chords
+                new_chords.append(uncommon_chord_map(c.split('/')[0]))
+            else:
+                new_chords.append(uncommon_chord_map(c))
+        states.update(new_chords)
+        seq.extend(new_chords)
+states = list(states)
+seq = seq + ['start/end']
+S = len(states)
+T = len(seq)
+print(S, T)
 
 #%%
 ## Create a S X S transition matrix, and find the transition counts:
-states = list(states)
-S = len(states)
-T = len(seq)
-tr_counts = np.zeros( (S, S) )
+tr_counts = np.zeros( (S+2, S+2) )
 
 for t in range(1,T): # For each transition
     # Current and next tokens:
