@@ -1,3 +1,4 @@
+# Convenience Function
 def uncommon_chord_map(chord):
     uncommon_chord_map = {
         'Fs11': 'Fs7',
