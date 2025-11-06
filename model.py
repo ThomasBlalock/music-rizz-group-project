@@ -1,20 +1,24 @@
 #%%
 import pandas as pd
 import numpy as np
+from parse_data import parse_chord_string
 
 df = pd.read_csv('data/chordonomicon.csv')
-measures = df['chord'].values
+df['chord_map'] = df['chords'].apply(parse_chord_string)
+measures = df['chord_map'].to_list()
 
 seq = []
 states = set()
-for k, v in measures.items():
-    if 'chorus' in k.lower():
-        seq += v
-        states.update(v)
+for measure in measures:
+    for k, v in measure.items():
+        if 'chorus' in k.lower():
+            seq += v
+            states.update(v)
 
 
 #%%
 ## Create a S X S transition matrix, and find the transition counts:
+states = list(states)
 S = len(states)
 T = len(seq)
 tr_counts = np.zeros( (S, S) )
