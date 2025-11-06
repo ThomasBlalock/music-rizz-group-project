@@ -1,4 +1,4 @@
-# instantiates a model class. example code below
+# instantiates a model class
 #%%
 import numpy as np
 from chord_map import notes_map
@@ -47,10 +47,12 @@ class Model:
         spb = 60.0 / bpm
         time_left = spb * 4
         full_audio = []
-        for state_name in self.generate_chords(start_state=start_state, 
+        chords_list = []
+        for chords in self.generate_chords(start_state=start_state, 
                                                temp=temp, 
                                                max_chords=max_chords):
-            midi_notes = notes_map(state_name)
+            midi_notes = notes_map(chords)
+            chords_list.append(chords)
             
             if midi_notes:
                 dur_candidates = [can for can in [spb, spb*2.0, spb*4.0] if can <= time_left]
@@ -64,6 +66,4 @@ class Model:
         if full_audio:
             combined_track = np.concatenate(full_audio)
             display(Audio(data=combined_track, rate=22050, autoplay=True))
-#%%
-model = Model()
-model()
+        return chords_list
