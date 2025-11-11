@@ -1,7 +1,7 @@
 # instantiates a model class
 #%%
 import numpy as np
-from chord_map import notes_map
+from thomas.chord_map import notes_map
 from IPython.display import Audio, display
 import time
 

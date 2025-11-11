@@ -12,7 +12,7 @@ if '..' not in sys.path:
 print(f'Current working directory: {os.getcwd()}') 
 print(f'Search path: {"\n".join(sys.path)}')
 import numpy as np
-from chord_map import notes_map
+from terry.chord_map import notes_map
 from IPython.display import Audio, display
 import time
 
