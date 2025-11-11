@@ -1,5 +1,16 @@
 # instantiates a model class
 #%%
+# Imports
+#
+import os
+import sys
+from pathlib import Path
+# Add parent directory to search path in case we're in a user folder
+# but do it only once, in case we're in an interactive environment.
+if '..' not in sys.path:
+    sys.path.insert(1+sys.path.index(""), '..')
+print(f'Current working directory: {os.getcwd()}') 
+print(f'Search path: {"\n".join(sys.path)}')
 import numpy as np
 from chord_map import notes_map
 from IPython.display import Audio, display
