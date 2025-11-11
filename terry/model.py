@@ -67,7 +67,10 @@ class Model:
             
             if midi_notes:
                 dur_candidates = [can for can in [spb, spb*2.0, spb*4.0] if can <= time_left]
-                duration = np.random.choice(dur_candidates)
+                try:
+                    duration = np.random.choice(dur_candidates)
+                except:
+                    duration = spb*2.0
                 time_left -= duration
                 if time_left <= 0:
                     time_left = spb * 4

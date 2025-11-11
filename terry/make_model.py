@@ -19,7 +19,6 @@ import pickle
 from thomas.chord_map import uncommon_chord_map
 
 def make_model(genres= ['pop', 'rock', 'metal', 'country', 'punk', 'alternative', 'jazz']):
-    # %%
     # Configuration section
     #
     datadir = 'data'
@@ -39,7 +38,6 @@ def make_model(genres= ['pop', 'rock', 'metal', 'country', 'punk', 'alternative'
     }
 
 
-    # %% 
     # Load the chordonomicon
     #
     if Path(files['chordonomicon_pickled']).is_file():
@@ -52,7 +50,6 @@ def make_model(genres= ['pop', 'rock', 'metal', 'country', 'punk', 'alternative'
         cdf.to_pickle(files['chordonomicon_pickled'])
 
     for genre in genres:
-        # %%
         # Identify states and transitions
         #
         states_path = files['statrans_pickled'].replace('GENRE', genre)
@@ -86,7 +83,6 @@ def make_model(genres= ['pop', 'rock', 'metal', 'country', 'punk', 'alternative'
                 pickle.dump((states, seq, S, T), file)
                 print(f'Saved {states_path}')
 
-        #%%
         # Create a S X S transition matrix, and find the transition counts:
         #
         print(f'Generating Transition Matrix for {genre} genre')
@@ -117,7 +113,6 @@ def make_model(genres= ['pop', 'rock', 'metal', 'country', 'punk', 'alternative'
         print(f'\nTransition Proportions:')
         pd.DataFrame(np.round(tr_pr,2), index=states, columns=states)
 
-        #%%
         # Plot the transition probabilities
         #
         import seaborn as sns
@@ -136,10 +131,12 @@ def make_model(genres= ['pop', 'rock', 'metal', 'country', 'punk', 'alternative'
         plt.ylabel('From State...')
         #plt.show()
 
-        #%%
         # Save the model
         #
         np.save(files['tr_pr'].replace('GENRE', genre) , tr_pr)
         np.save(files['states'].replace('GENRE', genre), states)
 
     # end genre loop
+
+# make_model()
+# %%
